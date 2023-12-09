@@ -1,4 +1,4 @@
-package com.imagefinder
+package com.imagefinder.viewModelTests
 
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
