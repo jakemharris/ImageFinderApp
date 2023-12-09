@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ImageFinder</string>
+    <string name="find_a_photo">Find a photo!</string>
+    <string name="search">Search</string>
+    <string name="back">Back</string>
+    <string name="details">Details</string>
+</resources>
