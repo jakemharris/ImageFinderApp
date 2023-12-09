@@ -90,7 +90,6 @@ dependencies {
     androidTestImplementation("androidx.test:runner:1.5.2")
     androidTestImplementation("androidx.test:rules:1.5.0")
     testImplementation("org.robolectric:robolectric:4.9")
-    testImplementation("android.arch.core:core-testing:1.1.1")
     testImplementation("org.mockito:mockito-core:4.9.0")
     testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
     testImplementation("org.mockito:mockito-inline:2.13.0")

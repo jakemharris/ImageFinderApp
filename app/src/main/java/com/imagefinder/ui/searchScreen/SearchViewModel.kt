@@ -1,6 +1,5 @@
 package com.imagefinder.ui.searchScreen
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,12 +15,12 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.jetbrains.annotations.VisibleForTesting
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val imageRepository: ImageRepository,
-//    private val movieRepo: MovieRepo,
     private val events: SearchFragmentEvents
 ) : ViewModel() {
 
@@ -35,16 +34,14 @@ class SearchViewModel @Inject constructor(
     private val eventPublisher = MutableLiveData<FragmentUIEvent<SearchFragment>>()
     val eventObservable: LiveData<FragmentUIEvent<SearchFragment>> = eventPublisher
 
-
-    private fun fetchImages(searchString: String) {
+    @VisibleForTesting
+    fun fetchImages(searchString: String) {
         if (searchString.isBlank()) return
-        Log.w("jake", "fetch images =" + searchString)
         viewState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
             imageRepository.getImages(searchString)
             when (val result = imageRepository.getImages(searchString)) {
                 is NetworkResult.Success -> {
-                    Log.w("jake", "got images in VM =" + result.data.toString())
                     viewState.update {
                         it.copy(
                             isLoading = false,

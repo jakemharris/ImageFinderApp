@@ -75,7 +75,7 @@ fun SearchScreen(
                 item(span = StaggeredGridItemSpan.FullLine, content = { HeaderContent(viewModel = viewModel, state = state) })
                 items(state.listOfImages) { photo ->
                     AsyncImage(
-                        model = photo.src.medium,
+                        model = photo.src?.medium,
                         contentScale = ContentScale.Crop,
                         contentDescription = null,
                         modifier = Modifier

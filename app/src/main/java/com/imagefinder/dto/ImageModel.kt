@@ -5,7 +5,7 @@ data class ImageModel(
     val id: String,
     val url: String,
     val photographer: String,
-    val src: SrcImageData,
+    val src: SrcImageData?,
 )
 
 data class SrcImageData(
