@@ -81,6 +81,7 @@ class SearchViewModel @Inject constructor(
     }
 }
 
+
 data class SearchScreenViewState(
     val isLoading: Boolean = false,
     val hasErrorMessage: String? = null,
