@@ -22,3 +22,8 @@ Fun things about this project:
 19. Nav graph
 20. Unit tests
 21. View model tests
+
+High quality screen recording here: https://drive.google.com/drive/folders/1p1-lH9LdhBFY06BxGJVWnxWdhO8vrJWH?usp=sharing
+
+
+![Screen Recording 2023-12-08 at 5 19 46 PM](https://github.com/jakemharris/ImageFinderApp/assets/6319286/69b28e54-00bf-44c0-8dd3-5b336d99b3e2)
