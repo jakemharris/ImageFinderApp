@@ -33,25 +33,31 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.imagefinder.R
+import com.imagefinder.ui.Routes
 import com.imagefinder.ui.common.PrimaryButtonText
 import com.imagefinder.ui.common.ScreenTitle
 
 @Composable
 fun SearchScreen(
-    viewModel: SearchViewModel
+    navigation: NavController
 ) {
+    val viewModel: SearchViewModel = hiltViewModel()
     val state by viewModel.observableState.collectAsStateWithLifecycle()
 
     Column(
@@ -80,7 +86,10 @@ fun SearchScreen(
                         contentDescription = null,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable { viewModel.onImageClick(photo.id) }
+                            .clickable {
+                                viewModel.onImageClick(photo.id)
+                                navigation.navigate(Routes.DETAIL_SCREEN)
+                            }
                             .wrapContentHeight()
                     )
                 }
@@ -94,8 +103,11 @@ fun SearchScreen(
     }
 }
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun HeaderContent(viewModel: SearchViewModel, state: SearchScreenViewState) {
+    val controller = LocalSoftwareKeyboardController.current
+
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -148,7 +160,9 @@ fun HeaderContent(viewModel: SearchViewModel, state: SearchScreenViewState) {
 
         AnimatedVisibility(visible = !state.isLoading) {
             TextButton(
-                onClick = { viewModel.onClickSearch() },
+                onClick = {
+                    controller?.hide()
+                    viewModel.onClickSearch() },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 10.dp)

@@ -1,5 +1,6 @@
 package com.imagefinder.ui.detailScreen
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,17 +18,23 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.imagefinder.R
 import com.imagefinder.ui.common.PrimaryButtonText
 import com.imagefinder.ui.common.ScreenTitle
 
 @Composable
-fun DetailScreen(viewModel: DetailViewModel) {
+fun DetailScreen(
+    navigation: NavController,
+) {
+    val viewModel: DetailViewModel = hiltViewModel()
     val state by viewModel.observableState.collectAsStateWithLifecycle()
 
     Column(
@@ -41,26 +48,31 @@ fun DetailScreen(viewModel: DetailViewModel) {
     ) {
         ScreenTitle(resourceId = R.string.details)
 
-        when {
-            state.isLoading -> CircularProgressIndicator()
-            state.errorMessage.isNotBlank() -> ErrorContent(errorMessage = state.errorMessage)
-            else -> MainContent(state = state, viewModel::onClickBack)
-        }
+        MainContent(state = state, navigation = navigation)
     }
 }
 
 @Composable
 private fun MainContent(
     state: DetailScreenViewState,
-    onClickBack: () -> Unit
+    navigation: NavController
 ) {
     val imageDetails = state.imageData
 
     AsyncImage(
         model = imageDetails?.src?.large,
         contentDescription = imageDetails?.alt,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        placeholder = painterResource(R.drawable.gallery)
     )
+
+    AnimatedVisibility(visible = state.isLoading) {
+        CircularProgressIndicator()
+    }
+
+    AnimatedVisibility(visible = state.errorMessage.isNotBlank()) {
+        ErrorContent(errorMessage = state.errorMessage)
+    }
 
     Text(
         text = imageDetails?.alt ?: "No description",
@@ -74,7 +86,7 @@ private fun MainContent(
     )
 
     TextButton(
-        onClick = onClickBack,
+        onClick = { navigation.popBackStack() },
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 10.dp)

@@ -85,6 +85,8 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("joda-time:joda-time:2.11.1")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("androidx.navigation:navigation-compose:2.7.5")
+    implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
 
     //test
     androidTestImplementation("androidx.test:runner:1.5.2")

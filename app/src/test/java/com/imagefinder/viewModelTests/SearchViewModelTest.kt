@@ -6,8 +6,6 @@ import app.cash.turbine.test
 import com.imagefinder.dto.ImageModel
 import com.imagefinder.network.NetworkResult
 import com.imagefinder.repository.ImageRepository
-import com.imagefinder.ui.searchScreen.NavigateToDetailsEvent
-import com.imagefinder.ui.searchScreen.SearchFragmentEvents
 import com.imagefinder.ui.searchScreen.SearchViewModel
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
@@ -32,7 +30,6 @@ class SearchViewModelTest {
 
 
     private lateinit var viewModel: SearchViewModel
-    private lateinit var eventFactory: SearchFragmentEvents
     private lateinit var mockImageRepository: ImageRepository
 
     val searchString = "Beach"
@@ -42,11 +39,9 @@ class SearchViewModelTest {
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
         mockImageRepository = mock()
-        eventFactory = SearchFragmentEvents()
 
         viewModel = SearchViewModel(
             mockImageRepository,
-            eventFactory
         )
     }
 
@@ -134,15 +129,5 @@ class SearchViewModelTest {
             val state = awaitItem()
             assert(state.searchString == "")
         }
-    }
-
-    @Test
-    fun `Clicking image should navigate`() = runTest {
-        // When
-        viewModel.onImageClick("")
-
-        // Then
-        val publishedEvent = viewModel.eventObservable.value
-        assert(publishedEvent is NavigateToDetailsEvent)
     }
 }

@@ -1,15 +1,10 @@
 package com.imagefinder.ui.detailScreen
 
-import android.os.Bundle
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.imagefinder.FragmentUIEvent
 import com.imagefinder.dto.ImageModel
 import com.imagefinder.network.NetworkResult
 import com.imagefinder.repository.ImageRepository
-import com.imagefinder.ui.detailScreen.DetailFragment.Companion.IMAGE_ID_TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -23,7 +18,6 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     private val imageRepository: ImageRepository,
-    private val events: DetailFragmentEvents
 ) : ViewModel() {
 
     private val viewState = MutableStateFlow(DetailScreenViewState())
@@ -33,17 +27,14 @@ class DetailViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = viewState.value
         )
-    private val eventPublisher = MutableLiveData<FragmentUIEvent<DetailFragment>>()
-    val eventObservable: LiveData<FragmentUIEvent<DetailFragment>> = eventPublisher
 
-    fun onCreate(bundle: Bundle) {
-        val imageId = bundle.getString(IMAGE_ID_TAG, "")
-        fetchImageDetails(imageId)
+
+    init {
+        imageRepository.selectedImageId?.let {
+            fetchImageDetails(it)
+        }
     }
 
-    fun onClickBack() {
-        eventPublisher.value = events.navigateBackToList()
-    }
 
     private fun fetchImageDetails(imageId: String) {
         viewState.update { it.copy(isLoading = true) }

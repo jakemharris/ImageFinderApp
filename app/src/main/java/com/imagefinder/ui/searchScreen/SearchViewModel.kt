@@ -1,10 +1,7 @@
 package com.imagefinder.ui.searchScreen
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.imagefinder.FragmentUIEvent
 import com.imagefinder.dto.ImageModel
 import com.imagefinder.network.NetworkResult
 import com.imagefinder.repository.ImageRepository
@@ -21,7 +18,6 @@ import javax.inject.Inject
 @HiltViewModel
 class SearchViewModel @Inject constructor(
     private val imageRepository: ImageRepository,
-    private val events: SearchFragmentEvents
 ) : ViewModel() {
 
     private val viewState = MutableStateFlow(SearchScreenViewState())
@@ -31,8 +27,6 @@ class SearchViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(5000),
             initialValue = viewState.value
         )
-    private val eventPublisher = MutableLiveData<FragmentUIEvent<SearchFragment>>()
-    val eventObservable: LiveData<FragmentUIEvent<SearchFragment>> = eventPublisher
 
     @VisibleForTesting
     fun fetchImages(searchString: String) {
@@ -64,12 +58,11 @@ class SearchViewModel @Inject constructor(
     }
 
     fun onClickSearch() {
-        eventPublisher.value = events.dismissSoftKeyboard()
         fetchImages(viewState.value.searchString)
     }
 
     fun onImageClick(imageId: String) {
-        eventPublisher.value = events.navigateToDetails(imageId)
+        imageRepository.selectedImageId = imageId
     }
 
     fun onTextChange(searchText: String) {
