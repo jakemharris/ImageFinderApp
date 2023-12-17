@@ -26,3 +26,6 @@ High quality screen recording here: https://drive.google.com/drive/folders/1p1-l
 
 
 ![Screen Recording 2023-12-08 at 5 19 46 PM](https://github.com/jakemharris/ImageFinderApp/assets/6319286/69b28e54-00bf-44c0-8dd3-5b336d99b3e2)
+
+Unit test covereage report over 80% line coverage:
+<img width="585" alt="Screenshot 2023-12-17 at 1 34 28 PM" src="https://github.com/jakemharris/ImageFinderApp/assets/6319286/ed517707-85db-4efc-874a-71e30748e6e9">
