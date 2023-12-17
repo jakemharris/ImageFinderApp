@@ -3,12 +3,13 @@ package com.imagefinder.viewModelTests
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import app.cash.turbine.test
-import com.imagefinder.dto.ImageModel
-import com.imagefinder.network.NetworkResult
+import com.imagefinder.nontest.dto.ImageModel
+import com.imagefinder.nontest.network.NetworkResult
 import com.imagefinder.repository.ImageRepository
-import com.imagefinder.ui.searchScreen.SearchViewModel
+import com.imagefinder.vm.SearchViewModel
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
+import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -19,6 +20,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import java.lang.Exception
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class SearchViewModelTest {
@@ -130,4 +132,18 @@ class SearchViewModelTest {
             assert(state.searchString == "")
         }
     }
+    @Test
+    fun `Error state`() = runTest {
+        // When
+        whenever(mockImageRepository.getImages(searchString)).thenReturn(
+            NetworkResult.Error(Exception("No images found"))
+        )
+        viewModel.fetchImages(searchString)
+        // Then
+        viewModel.observableState.test {
+            val state = awaitItem()
+            assertEquals("No images found",state.errorMessage)
+        }
+    }
+
 }

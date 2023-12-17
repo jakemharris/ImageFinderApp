@@ -1,8 +1,9 @@
 package com.imagefinder.repository
 
-import com.imagefinder.dto.ImageModel
-import com.imagefinder.network.NetworkResult
-import com.imagefinder.network.retrofit.NetworkService
+import android.util.Log
+import com.imagefinder.nontest.dto.ImageModel
+import com.imagefinder.nontest.network.NetworkResult
+import com.imagefinder.nontest.network.retrofit.NetworkService
 import javax.inject.Inject
 import javax.inject.Singleton
 
